@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Portfolio | Contact</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <script src="cdn/jquery-3.6.0.min.js"></script>
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+    <script src="cdn/jquery.validate.min.js"></script>
+    <!-- <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.5/jquery.validate.min.js"></script> -->
+</head>
+
+<body>
+    <header>
+        <div class="head-left">
+            <img src="images/logo.png" alt="logo">
+            <button>Products</button>
+        </div>
+
+        <div class="head-right">
+            <p><a href="index.html">HOME</a></p>
+            <p><a href="index.html">ABOUT</a></p>
+            <p><a href="index.html">STORE</a></p>
+            <p><a href="FAQS.html">FAQS</a></p>
+            <p><a href="#">CONTACT</a></p>
+        </div>
+    </header>
+    <div id="contact-form-btn">
+        <div class="gaming-bg-header"></div>
+        <main class="contact-area">
+            <div class="section-title">
+                <h2>Get In Touch</h2>
+                <div class="purple-glow-bar"></div>
+            </div>
+            <div class="flex-container">
+                <div class="contact-details">
+                    <div class="detail-item">
+                        <div class="icon-wrap"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <span class="label">Email</span>
+                            <p class="value">gamingwebsite@gmail.com</p>
+                        </div>
+                    </div>
+                    <div class="detail-item">
+                        <div class="icon-wrap"><i class="fab fa-github"></i></div>
+                        <div>
+                            <span class="label">GitHub</span>
+                            <p class="value">github.com/jaffarwajeeha13</p>
+                        </div>
+                    </div>
+                    <div class="gaming-status">
+                        <i class="fas fa-terminal"></i>
+                        <div>
+                            <strong>Open to opportunities</strong>
+                            <p>Seeking internships in AI and Creative Tech.</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="glass-form-container">
+                    <form id="contactForm">
+                        <div class="input-box">
+                            <label for="name">Full Name</label>
+                            <input type="text" name="name" id="name" placeholder="Enter your name">
+                        </div>
+                        <div class="input-box">
+                            <label for="email">Email Address</label>
+                            <input type="email" name="email" id="email" placeholder="example@gmail.com">
+                        </div>
+                        <div class="input-box">
+                            <label for="message">Your Message</label>
+                            <textarea name="message" id="message" rows="4"
+                                placeholder="Type your message..."></textarea>
+                        </div>
+                        <button type="submit" id="submitBtn">
+                            SEND MESSAGE <i class="fas fa-bolt"></i>
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </main>
+
+        <footer class="footer">
+            <p>&copy; 2026 Gaming Hub. All rights reserved.</p>
+            <ul>
+                <li><a href="#"><i class="bx bxl-youtube"></i></a></li>
+                <li><a href="#"><i class="bx bxl-twitter"></i></a></li>
+                <li><a href="#"><i class="bx bxl-instagram"></i></a></li>
+                <li><a href="#"><i class="bx bxl-github"></i></a></li>
+                <li><a href="#"><i class="bx bxl-linkedin"></i></a></li>
+            </ul>
+            <p>Privacy Policy</p>
+        </footer>
+    </div>
+
+    <script>
+        $(document).ready(function () {
+            // Initial animation
+            $('.contact-area').hide().fadeIn(1500);
+
+            // JQuery Validation Setup
+            $("#contactForm").validate({
+                rules: {
+                    name: {
+                        required: true,
+                        minlength: 3
+                    },
+                    email: {
+                        required: true,
+                        email: true
+                    },
+                    message: {
+                        required: true,
+                        minlength: 10
+                    }
+                },
+                messages: {
+                    name: {
+                        required: "Please enter your tag (name)",
+                        minlength: "Name must be at least 3 characters"
+                    },
+                    email: {
+                        required: "Email is required to connect",
+                        email: "Please enter a valid email address"
+                    },
+                    message: {
+                        required: "The message box is empty!",
+                        minlength: "Your message is too short for the quest"
+                    }
+                },
+                // This replaces your manual form submit logic
+                submitHandler: function (form) {
+                    const name = $('input[name="name"]').val();
+                    $('#submitBtn').prop('disabled', true).html('SENDING... <i class="fas fa-spinner fa-spin"></i>');
+
+                    // Simulate API Call
+                    setTimeout(function () {
+                        alert("GG, " + name + "! Your message was sent successfully.");
+                        $('#submitBtn').prop('disabled', false).html('SEND MESSAGE <i class="fas fa-bolt"></i>');
+                        form.reset();
+                    }, 1500);
+                }
+            });
+
+            // Focus/Blur effects (retained from your original code)
+            $('input, textarea').on('focus', function () {
+                $(this).css({
+                    'border-color': '#6d28d9',
+                    'box-shadow': '0 0 10px rgba(109, 40, 217, 0.5)',
+                    'transform': 'scale(1.01)'
+                });
+            });
+
+            $('input, textarea').on('blur', function () {
+                $(this).css({
+                    'border-color': '#334155',
+                    'box-shadow': 'none',
+                    'transform': 'scale(1)'
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>

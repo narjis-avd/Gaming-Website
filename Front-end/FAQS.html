@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming FAQ | 10 Intelligence Intel</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link rel="stylesheet" href="cdn/all.min.css">
+    <script src="cdn/jquery-3.6.0.min.js"></script>
+    <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"> -->
+    <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
+</head>
+<body>
+      <header>
+        <div class="head-left">
+            <img src="images/logo.png" alt="logo">
+            <button>Products</button>
+        </div>
+
+        <div class="head-right">
+            <p><a href="index.html">HOME</a></p>
+            <p><a href="index.html">ABOUT</a></p>
+            <p><a href="index.html">STORE</a></p>
+            <p><a href="FAQS.html">FAQS</a></p>
+            <p><a href="index.html">CONTACT</a></p>
+        </div>
+    </header>
+    <div id="faqs">
+    <div class="gaming-banner-space"></div>
+    <main class="faq-section">
+        <div class="faq-header">
+            <h1>Support <span class="purple-neon">Database</span></h1>
+            <div class="search-box">
+                <i class="fas fa-search"></i>
+                <input type="text" id="faqSearch" placeholder="Search for keywords (e.g. 'Lag', 'Account', 'FPS')...">
+            </div>
+        </div>
+        <div class="faq-grid">
+            <div class="faq-card">
+                <div class="faq-trigger"><span>How do I enable 120FPS mode?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Go to Settings > Video. Toggle 'Performance Mode' to ON. Requires HDMI 2.1 and a 120Hz+ monitor.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>I lost my 2FA recovery codes!</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Contact support with proof of purchase and your registered ID to reset your security credentials manually.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>What is the 'Purple Pass' tier?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>The Purple Pass grants 20% extra XP, monthly exclusive skins, and priority server queuing.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>How to report a toxic player?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Open the Social Tab (O), click the player's name, and select 'Report'. We review all reports within 24 hours.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>Minimum specs for Ray Tracing?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Recommended: NVIDIA RTX 30-series or AMD RX 6000-series, 16GB RAM, and an SSD.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>Can I play across different platforms?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Yes! Full cross-play is supported between PC, PS5, and Xbox Series X. Progress is saved to your Purple ID.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>How do I join the Pro League?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Reach 'Diamond' rank in Ranked Season and register through the 'Competitions' tab on our website.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>Servers are lagging, what do I do?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Check your region settings in the main menu. Select the server with the lowest 'ms' ping for your location.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>How to refund an accidental skin purchase?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Items can be refunded within 48 hours IF they have not been equipped or used in a match.</p></div>
+            </div>
+            <div class="faq-card">
+                <div class="faq-trigger"><span>Is there a mobile version coming?</span> <i class="fas fa-plus"></i></div>
+                <div class="faq-content"><p>Beta testing for iOS and Android begins in Q4 2026. Stay tuned to our socials for invite codes!</p></div>
+            </div>
+        </div>
+        <div id="noResults" style="display:none; text-align:center; color:#7c3aed; padding:20px;">
+            <i class="fas fa-ghost"></i> No data found in the database.
+        </div>
+    </main>
+    </div>
+    <footer class="footer">
+            <p>&copy; 2026 Gaming Hub. All rights reserved.</p>
+            <ul>
+                <li><a href="#"><i class="bx bxl-youtube"></i></a></li>
+                <li><a href="#"><i class="bx bxl-twitter"></i></a></li>
+                <li><a href="#"><i class="bx bxl-instagram"></i></a></li>
+                <li><a href="#"><i class="bx bxl-github"></i></a></li>
+                <li><a href="#"><i class="bx bxl-linkedin"></i></a></li>
+            </ul>
+            <p>Privacy Policy</p>
+        </footer>
+    <script>
+        $(document).ready(function() {
+    $('.faq-trigger').on('click', function() {
+        const parent = $(this).parent('.faq-card');
+        
+        if (parent.hasClass('active')) {
+            parent.removeClass('active');
+            $(this).next('.faq-content').slideUp();
+        } else {
+            $('.faq-card').removeClass('active');
+            $('.faq-content').slideUp();
+            parent.addClass('active');
+            $(this).next('.faq-content').slideDown();
+        }
+    });
+    $('#faqSearch').on('keyup', function() {
+        const val = $(this).val().toLowerCase();
+        let found = false;
+
+        $('.faq-card').each(function() {
+            const text = $(this).text().toLowerCase();
+            if (text.indexOf(val) > -1) {
+                $(this).show();
+                found = true;
+            } else {
+                $(this).hide();
+            }
+        });
+
+        found ? $('#noResults').hide() : $('#noResults').show();
+    });
+});
+    </script>
+</body>
+</html>

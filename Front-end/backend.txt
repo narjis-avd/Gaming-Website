@@ -1,0 +1,9 @@
+filter
+coin
+login/sing up
+productes
+login page colon(normal user/admin panel)
+verifacation
+fonts
+search bar
+data store
