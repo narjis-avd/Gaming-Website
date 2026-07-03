@@ -4,7 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gaming website</title>
+    <title>Gaming Hub | Home</title>
+    <meta name="description" content="Gaming Hub — the world's largest gaming community. Discover, connect, and shop the best gaming gear.">
     <link rel="stylesheet" href="style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +21,14 @@
     <!-- <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script> -->
      <script src="cdn/slick.min.js"></script>
     <!-- <script src="https://cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script> -->
+    <style>
+        /* Toast notifications for Socket.io */
+        .toast-container{position:fixed;top:80px;right:20px;z-index:10000;display:flex;flex-direction:column;gap:10px}
+        .toast{padding:14px 20px;background:rgba(15,15,25,.95);backdrop-filter:blur(16px);border:1px solid rgba(0,245,255,.4);border-radius:12px;color:#fff;font-size:14px;box-shadow:0 8px 32px rgba(0,0,0,.4);animation:slideIn .4s ease,fadeAway .4s ease 3.6s forwards;display:flex;align-items:center;gap:10px;max-width:360px;font-family:'Inter',sans-serif}
+        @keyframes slideIn{from{opacity:0;transform:translateX(80px)}to{opacity:1;transform:translateX(0)}}
+        @keyframes fadeAway{to{opacity:0;transform:translateX(80px)}}
+        .nav-auth-link a{color:#edff66 !important;font-weight:600;}
+    </style>
 </head>
 
 <body>
@@ -27,15 +36,16 @@
         <header>
             <div class="head-left">
                 <img src="images/logo.png" alt="logo">
-                <button>Products</button>
+                <button onclick="window.location.href='store.html'">Products</button>
             </div>
 
             <div class="head-right">
                 <p><a href="#hero">HOME</a></p>
                 <p><a href="#about">ABOUT</a></p>
-                <p><a href="#gallery">STORE</a></p>
+                <p><a href="store.html">STORE</a></p>
                 <p><a href="FAQS.html">FAQS</a></p>
                 <p><a href="#contact">CONTACT</a></p>
+                <p class="nav-auth-link" id="nav-auth-link"></p>
             </div>
         </header>
         <section id="hero" class="hero-section autoblur">
