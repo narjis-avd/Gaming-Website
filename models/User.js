@@ -28,6 +28,10 @@ const userSchema = new mongoose.Schema(
       enum: ['user', 'admin'],
       default: 'user',
     },
+    active: {
+      type: Boolean,
+      default: false,
+    },
     walletBalance: {
       type: Number,
       default: 1000,

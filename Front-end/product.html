@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gaming Hub | Product Details</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            background: #050505;
+            color: #fff;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            overflow-x: hidden;
+        }
+
+        /* ─── Detail Container ─── */
+        .detail-container {
+            max-width: 1200px;
+            margin: 100px auto 60px;
+            padding: 0 20px;
+            animation: fadeIn 0.8s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 30px;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #00f5ff;
+        }
+
+        /* ─── Product Card Layout ─── */
+        .product-detail-card {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            background: rgba(15, 15, 25, 0.8);
+            backdrop-filter: blur(16px);
+            border: 1px solid rgba(109, 40, 217, 0.2);
+            border-radius: 24px;
+            padding: 40px;
+            box-shadow: 0 16px 48px rgba(0, 0, 0, 0.4);
+        }
+
+        /* Image Column */
+        .detail-image-wrap {
+            position: relative;
+            border-radius: 18px;
+            overflow: hidden;
+            border: 1px solid rgba(109, 40, 217, 0.2);
+            background: #0c0c18;
+            height: 450px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .detail-image-wrap img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.6s ease;
+        }
+
+        .detail-image-wrap img:hover {
+            transform: scale(1.05);
+        }
+
+        .detail-category-badge {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            padding: 6px 16px;
+            background: rgba(109, 40, 217, 0.9);
+            backdrop-filter: blur(8px);
+            border-radius: 30px;
+            font-size: 12px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #e0d4ff;
+            border: 1px solid rgba(0, 245, 255, 0.2);
+        }
+
+        /* Info Column */
+        .detail-info {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .detail-title {
+            font-size: clamp(1.8rem, 4vw, 2.5rem);
+            font-weight: 800;
+            margin: 0 0 15px 0;
+            line-height: 1.2;
+            color: #fff;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .detail-price {
+            font-size: 32px;
+            font-weight: 900;
+            color: #edff66;
+            margin-bottom: 25px;
+            display: inline-block;
+        }
+
+        .detail-desc {
+            color: #94a3b8;
+            font-size: 15px;
+            line-height: 1.7;
+            margin-bottom: 30px;
+        }
+
+        /* Purchase Section */
+        .purchase-wrap {
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            padding-top: 30px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        /* Qty Controls */
+        .quantity-selector {
+            display: flex;
+            align-items: center;
+            border: 1px solid #1e1e3a;
+            border-radius: 12px;
+            background: #0c0c18;
+            overflow: hidden;
+        }
+
+        .quantity-selector button {
+            width: 44px;
+            height: 44px;
+            background: transparent;
+            border: none;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .quantity-selector button:hover {
+            background: rgba(109, 40, 217, 0.2);
+        }
+
+        .quantity-selector span {
+            width: 44px;
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+        }
+
+        .detail-add-btn {
+            flex: 1;
+            min-width: 200px;
+            height: 44px;
+            background: linear-gradient(135deg, #6d28d9, #00f5ff);
+            border: none;
+            border-radius: 12px;
+            color: #000;
+            font-size: 15px;
+            font-weight: 800;
+            cursor: pointer;
+            transition: all 0.3s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            text-transform: uppercase;
+        }
+
+        .detail-add-btn:hover:not(:disabled) {
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px rgba(0, 245, 255, 0.4);
+            color: #000;
+        }
+
+        .detail-add-btn:disabled {
+            opacity: 0.4;
+            cursor: not-allowed;
+            color: #cbd5e1;
+        }
+
+        /* ─── Responsive ─── */
+        @media (max-width: 868px) {
+            .product-detail-card {
+                grid-template-columns: 1fr;
+                gap: 30px;
+                padding: 24px;
+            }
+
+            .detail-image-wrap {
+                height: 320px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <header>
+        <div class="head-left">
+            <img src="images/logo.png" alt="logo">
+            <button onclick="window.location.href='store.html'">Products</button>
+        </div>
+        <div class="head-right">
+            <p><a href="index.html">HOME</a></p>
+            <p><a href="index.html#about">ABOUT</a></p>
+            <p><a href="store.html">STORE</a></p>
+            <p><a href="FAQS.html">FAQS</a></p>
+            <p><a href="contact.html">CONTACT</a></p>
+            <p id="nav-auth-link"></p>
+        </div>
+    </header>
+
+    <div class="detail-container">
+        <a href="store.html" class="back-link">
+            <i class="fas fa-arrow-left"></i> Back to Store
+        </a>
+
+        <div class="product-detail-card" id="product-detail-card">
+            <!-- Details will be loaded dynamically -->
+            <div style="grid-column: 1/-1; text-align: center; padding: 100px 0;">
+                <i class="fas fa-spinner fa-spin" style="font-size: 32px; color: #6d28d9;"></i>
+                <p style="margin-top: 15px; color: #cbd5e1;">Loading product specifications...</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <script>
+        const API_BASE = window.location.origin;
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || 'null');
+        const isLoggedIn = !!token;
+        const isAdmin = user && user.role === 'admin';
+
+        let productData = null;
+        let purchaseQty = 1;
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateNavAuth();
+            loadProductDetail();
+        });
+
+        function updateNavAuth() {
+            const authLink = document.getElementById('nav-auth-link');
+            if (isLoggedIn && user) {
+                let html = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
+                if (user.role === 'admin') {
+                    html = `<a href="admin.html" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
+                }
+                authLink.innerHTML = html;
+            } else {
+                authLink.innerHTML = `<a href="login.html" style="color:#edff66;">LOGIN</a>`;
+            }
+        }
+
+        function logout() {
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            window.location.reload();
+        }
+
+        async function loadProductDetail() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const id = urlParams.get('id');
+
+            if (!id) {
+                renderError('Invalid Product Access', 'No product identifier provided in query parameters.');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/products/${id}`);
+                if (!res.ok) throw new Error('Product not found or database fetch failed');
+                
+                productData = await res.json();
+                renderProduct();
+            } catch (err) {
+                renderError('Product Not Found', err.message);
+            }
+        }
+
+        function renderProduct() {
+            const card = document.getElementById('product-detail-card');
+            card.innerHTML = `
+                <div class="detail-image-wrap">
+                    <img src="${productData.image}" alt="${productData.title}" onerror="this.src='images/images.jfif'">
+                    <span class="detail-category-badge">${productData.category}</span>
+                </div>
+                <div class="detail-info">
+                    <h1 class="detail-title">${productData.title}</h1>
+                    <div>
+                        <span class="detail-price">$${productData.price.toFixed(2)}</span>
+                    </div>
+                    <p class="detail-desc">${productData.description || 'No description provided for this gear.'}</p>
+                    
+                    <div class="purchase-wrap">
+                        <div class="quantity-selector">
+                            <button onclick="changeQty(-1)">−</button>
+                            <span id="qty-display">${purchaseQty}</span>
+                            <button onclick="changeQty(1)">+</button>
+                        </div>
+                        <button class="detail-add-btn" onclick="addToCart()" ${!isLoggedIn ? 'disabled title="Please log in"' : ''}>
+                            <i class="fas fa-cart-plus"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function renderError(title, desc) {
+            const card = document.getElementById('product-detail-card');
+            card.innerHTML = `
+                <div style="grid-column: 1/-1; text-align: center; padding: 60px 20px;">
+                    <i class="fas fa-exclamation-triangle" style="font-size: 48px; color: #ef4444;"></i>
+                    <h3 style="margin-top: 20px; font-size: 22px;">${title}</h3>
+                    <p style="color: #cbd5e1; margin-top: 10px;">${desc}</p>
+                    <a href="store.html" class="back-link" style="margin-top:20px; display:inline-block;">← Back to Store</a>
+                </div>
+            `;
+        }
+
+        function changeQty(amount) {
+            purchaseQty += amount;
+            if (purchaseQty < 1) purchaseQty = 1;
+            const display = document.getElementById('qty-display');
+            if (display) display.textContent = purchaseQty;
+        }
+
+        async function addToCart() {
+            if (!isLoggedIn) {
+                showToast('Please login to add items to cart', 'info');
+                return;
+            }
+
+            try {
+                const res = await fetch(`${API_BASE}/api/cart`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    body: JSON.stringify({ productId: productData._id, quantity: purchaseQty }),
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.message);
+                }
+
+                showToast(`Added ${purchaseQty} unit(s) to cart!`, 'success');
+            } catch (err) {
+                showToast(err.message || 'Failed to add to cart', 'error');
+            }
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toast-container');
+            if (!container) return;
+            const toast = document.createElement('div');
+            toast.className = `toast ${type}`;
+            const icon = type === 'success' ? 'check-circle' : type === 'error' ? 'exclamation-circle' : 'info-circle';
+            toast.innerHTML = `<i class="fas fa-${icon}"></i> ${message}`;
+            container.appendChild(toast);
+            setTimeout(() => toast.remove(), 4000);
+        }
+    </script>
+</body>
+
+</html>

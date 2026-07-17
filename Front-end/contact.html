@@ -133,16 +133,30 @@
                     }
                 },
                 // This replaces your manual form submit logic
-                submitHandler: function (form) {
+                submitHandler: async function (form) {
                     const name = $('input[name="name"]').val();
+                    const email = $('input[name="email"]').val();
+                    const message = $('textarea[name="message"]').val();
+                    
                     $('#submitBtn').prop('disabled', true).html('SENDING... <i class="fas fa-spinner fa-spin"></i>');
 
-                    // Simulate API Call
-                    setTimeout(function () {
-                        alert("GG, " + name + "! Your message was sent successfully.");
-                        $('#submitBtn').prop('disabled', false).html('SEND MESSAGE <i class="fas fa-bolt"></i>');
+                    try {
+                        const res = await fetch(`${API_BASE}/api/contact`, {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ name, email, message })
+                        });
+                        const data = await res.json();
+                        
+                        if (!res.ok) throw new Error(data.message || 'Quest failed. Submission error.');
+                        
+                        showToast(data.message || "GG, " + name + "! Your message was sent successfully.", "success");
                         form.reset();
-                    }, 1500);
+                    } catch (err) {
+                        showToast(err.message, "error");
+                    } finally {
+                        $('#submitBtn').prop('disabled', false).html('SEND MESSAGE <i class="fas fa-bolt"></i>');
+                    }
                 }
             });
 
@@ -180,7 +194,11 @@
             const authLink = document.getElementById('nav-auth-link');
             if (authLink) {
                 if (isLoggedIn && user) {
-                    authLink.innerHTML = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
+                    let html = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
+                    if (user.role === 'admin') {
+                        html = `<a href="admin.html" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
+                    }
+                    authLink.innerHTML = html;
                 } else {
                     authLink.innerHTML = `<a href="login.html" style="color:#edff66;">LOGIN</a>`;
                 }

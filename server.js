@@ -12,6 +12,8 @@ const authRoutes = require('./routes/authRoutes');
 const productRoutes = require('./routes/productRoutes');
 const cartRoutes = require('./routes/cartRoutes');
 const paymentRoutes = require('./routes/paymentRoutes');
+const orderRoutes = require('./routes/orderRoutes');
+const contactRoutes = require('./routes/contactRoutes');
 
 // Initialize Express
 const app = express();
@@ -50,6 +52,8 @@ app.use('/api/auth', authRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/cart', cartRoutes);
 app.use('/api/payment', paymentRoutes);
+app.use('/api/orders', orderRoutes);
+app.use('/api/contact', contactRoutes);
 
 // Root route — serve the frontend
 app.get('/', (req, res) => {

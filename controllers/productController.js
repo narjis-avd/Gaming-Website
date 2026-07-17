@@ -4,7 +4,7 @@ const Product = require('../models/Product');
 // @route   GET /api/products
 const getProducts = async (req, res) => {
   try {
-    const { search, category, minPrice, maxPrice } = req.query;
+    const { search, category, minPrice, maxPrice, page, limit } = req.query;
     const filter = {};
 
     // Text search via RegExp on title
@@ -24,8 +24,25 @@ const getProducts = async (req, res) => {
       if (maxPrice) filter.price.$lte = Number(maxPrice);
     }
 
-    const products = await Product.find(filter).sort({ createdAt: -1 });
-    res.json(products);
+    // Pagination calculations
+    const pageNum = Number(page) || 1;
+    const limitNum = Number(limit) || 8;
+    const skipNum = (pageNum - 1) * limitNum;
+
+    const total = await Product.countDocuments(filter);
+    const products = await Product.find(filter)
+      .sort({ createdAt: -1 })
+      .skip(skipNum)
+      .limit(limitNum);
+
+    const pages = Math.ceil(total / limitNum);
+
+    res.json({
+      products,
+      page: pageNum,
+      pages,
+      total,
+    });
   } catch (error) {
     res.status(500).json({ message: error.message });
   }

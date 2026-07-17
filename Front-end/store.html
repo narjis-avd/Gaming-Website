@@ -622,6 +622,50 @@
             .product-grid { grid-template-columns: 1fr; }
             .filter-bar .price-group { width: 100%; }
         }
+
+        /* ─── Pagination Styles ─── */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            margin: 40px 0 20px;
+        }
+
+        .pagination-btn {
+            background: rgba(15, 15, 25, 0.95);
+            border: 1px solid rgba(109, 40, 217, 0.3);
+            color: #cbd5e1;
+            padding: 10px 18px;
+            font-size: 14px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            font-family: 'Inter', sans-serif;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .pagination-btn:hover:not(:disabled) {
+            border-color: #00f5ff;
+            color: #fff;
+            box-shadow: 0 0 15px rgba(0, 245, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .pagination-btn.active {
+            background: linear-gradient(135deg, #6d28d9, #00f5ff);
+            color: #000;
+            border-color: transparent;
+            font-weight: 800;
+        }
+
+        .pagination-btn:disabled {
+            opacity: 0.35;
+            cursor: not-allowed;
+        }
     </style>
 </head>
 
@@ -717,6 +761,9 @@
             <h3>No products found</h3>
             <p>Try adjusting your search or filter criteria</p>
         </div>
+
+        <!-- Pagination -->
+        <div class="pagination-container" id="pagination-container"></div>
     </div>
 
     <!-- Edit Modal -->
@@ -774,7 +821,11 @@
         function updateNavAuth() {
             const authLink = document.getElementById('nav-auth-link');
             if (isLoggedIn && user) {
-                authLink.innerHTML = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
+                let html = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
+                if (user.role === 'admin') {
+                    html = `<a href="admin.html" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
+                }
+                authLink.innerHTML = html;
             } else {
                 authLink.innerHTML = `<a href="login.html" style="color:#edff66;">LOGIN</a>`;
             }
@@ -786,8 +837,12 @@
             window.location.reload();
         }
 
+        let currentPage = 1;
+        const limitNum = 8;
+
         // ─── Load Products ───
-        async function loadProducts() {
+        async function loadProducts(page = 1) {
+            currentPage = page;
             const search = document.getElementById('search-input').value;
             const category = document.getElementById('category-filter').value;
             const minPrice = document.getElementById('min-price').value;
@@ -798,65 +853,92 @@
             if (category) params.append('category', category);
             if (minPrice) params.append('minPrice', minPrice);
             if (maxPrice) params.append('maxPrice', maxPrice);
+            params.append('page', currentPage);
+            params.append('limit', limitNum);
 
             try {
                 const res = await fetch(`${API_BASE}/api/products?${params}`);
-                const products = await res.json();
-                renderProducts(products);
+                const data = await res.json();
+                renderProducts(data.products, data.total);
+                renderPagination(data.page, data.pages);
             } catch (err) {
                 console.error('Failed to load products:', err);
                 document.getElementById('results-text').textContent = 'Failed to load products';
             }
         }
 
-        function renderProducts(products) {
+        function renderProducts(products, total = 0) {
             const grid = document.getElementById('product-grid');
             const empty = document.getElementById('empty-state');
 
-            if (!products.length) {
+            if (!products || !products.length) {
                 grid.innerHTML = '';
                 empty.style.display = 'block';
                 document.getElementById('results-text').innerHTML = `Showing <strong>0</strong> products`;
+                document.getElementById('pagination-container').innerHTML = '';
                 return;
             }
 
             empty.style.display = 'none';
-            document.getElementById('results-text').innerHTML = `Showing <strong>${products.length}</strong> products`;
+            document.getElementById('results-text').innerHTML = `Showing <strong>${products.length}</strong> of <strong>${total}</strong> products`;
 
             grid.innerHTML = products.map(p => `
                 <div class="product-card" data-id="${p._id}">
-                    <div class="card-image">
+                    <div class="card-image" onclick="window.location.href='product.html?id=${p._id}'" style="cursor:pointer;">
                         <img src="${p.image}" alt="${p.title}" onerror="this.src='images/images.jfif'" loading="lazy">
                         <span class="category-badge">${p.category}</span>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title">${p.title}</h3>
+                        <h3 class="card-title" onclick="window.location.href='product.html?id=${p._id}'" style="cursor:pointer; transition: color 0.2s;">${p.title}</h3>
                         <p class="card-desc">${p.description}</p>
                         <div class="card-footer">
                             <span class="card-price">$${p.price.toFixed(2)}</span>
-                            <button class="add-cart-btn" onclick="addToCart('${p._id}')" ${!isLoggedIn ? 'disabled title="Login required"' : ''}>
+                            <button class="add-cart-btn" onclick="event.stopPropagation(); addToCart('${p._id}')" ${!isLoggedIn ? 'disabled title="Login required"' : ''}>
                                 <i class="fas fa-cart-plus"></i> Add
                             </button>
                         </div>
                     </div>
                     ${isAdmin ? `
                     <div class="admin-card-controls" style="display:flex;">
-                        <button class="edit-btn" onclick="openEditModal('${p._id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})"><i class="fas fa-pen"></i> Edit</button>
-                        <button class="delete-btn" onclick="adminDeleteProduct('${p._id}')"><i class="fas fa-trash"></i> Delete</button>
+                        <button class="edit-btn" onclick="event.stopPropagation(); openEditModal('${p._id}', ${JSON.stringify(p).replace(/"/g, '&quot;')})"><i class="fas fa-pen"></i> Edit</button>
+                        <button class="delete-btn" onclick="event.stopPropagation(); adminDeleteProduct('${p._id}')"><i class="fas fa-trash"></i> Delete</button>
                     </div>` : ''}
                 </div>
             `).join('');
         }
 
+        function renderPagination(page, pages) {
+            const container = document.getElementById('pagination-container');
+            if (pages <= 1) {
+                container.innerHTML = '';
+                return;
+            }
+
+            let html = '';
+            
+            // Previous button
+            html += `<button class="pagination-btn" onclick="loadProducts(${page - 1})" ${page === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
+
+            // Page numbers
+            for (let i = 1; i <= pages; i++) {
+                html += `<button class="pagination-btn ${i === page ? 'active' : ''}" onclick="loadProducts(${i})">${i}</button>`;
+            }
+
+            // Next button
+            html += `<button class="pagination-btn" onclick="loadProducts(${page + 1})" ${page === pages ? 'disabled' : ''}>Next <i class="fas fa-chevron-right"></i></button>`;
+
+            container.innerHTML = html;
+        }
+
         // ─── Search & Filter Listeners ───
         document.getElementById('search-input').addEventListener('input', () => {
             clearTimeout(debounceTimer);
-            debounceTimer = setTimeout(loadProducts, 350);
+            debounceTimer = setTimeout(() => loadProducts(1), 350);
         });
 
-        document.getElementById('category-filter').addEventListener('change', loadProducts);
-        document.getElementById('min-price').addEventListener('change', loadProducts);
-        document.getElementById('max-price').addEventListener('change', loadProducts);
+        document.getElementById('category-filter').addEventListener('change', () => loadProducts(1));
+        document.getElementById('min-price').addEventListener('change', () => loadProducts(1));
+        document.getElementById('max-price').addEventListener('change', () => loadProducts(1));
 
         // ─── Cart ───
         async function addToCart(productId) {

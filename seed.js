@@ -404,6 +404,7 @@ const seedDB = async () => {
         email: 'admin@gaminghub.com',
         password: 'admin123',
         role: 'admin',
+        active: true,
         walletBalance: 99999,
       });
       console.log('\n👑 Created default admin user:');

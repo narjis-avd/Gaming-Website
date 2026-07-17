@@ -446,6 +446,18 @@
     <script>
         const API_BASE = window.location.origin;
 
+        // On Page Load: Check for activation parameters
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('activated') === 'true') {
+                showMessage('Account activated successfully! You can now log in.', 'success');
+                switchTab('login');
+            } else if (urlParams.get('activated') === 'already') {
+                showMessage('Account already activated! Please log in.', 'success');
+                switchTab('login');
+            }
+        });
+
         // Tab switching
         function switchTab(tab) {
             document.querySelectorAll('.auth-tab').forEach(t => t.classList.remove('active'));
@@ -459,6 +471,7 @@
         // Messages
         function showMessage(text, type = 'error') {
             const msg = document.getElementById('auth-message');
+            msg.style.display = 'block';
             msg.className = `auth-message ${type}`;
             msg.innerHTML = `<i class="fas fa-${type === 'error' ? 'exclamation-circle' : 'check-circle'}"></i> ${text}`;
         }
@@ -531,18 +544,18 @@
 
                 if (!res.ok) throw new Error(data.message);
 
-                // Save to localStorage
-                localStorage.setItem('token', data.token);
-                localStorage.setItem('user', JSON.stringify({
-                    _id: data._id,
-                    username: data.username,
-                    email: data.email,
-                    role: data.role,
-                    walletBalance: data.walletBalance,
-                }));
+                showMessage(data.message || 'Account created! Please check your email to activate.', 'success');
+                
+                // Clear fields
+                document.getElementById('reg-username').value = '';
+                document.getElementById('reg-email').value = '';
+                document.getElementById('reg-password').value = '';
+                
+                btn.disabled = false;
+                btn.innerHTML = '<i class="fas fa-rocket"></i> Create Account';
 
-                showMessage('Account created! Redirecting...', 'success');
-                setTimeout(() => window.location.href = 'index.html', 1000);
+                // Automatically switch to login tab after a few seconds
+                setTimeout(() => switchTab('login'), 4000);
             } catch (err) {
                 showMessage(err.message || 'Registration failed');
                 btn.disabled = false;
@@ -551,7 +564,7 @@
         }
 
         // If already logged in, redirect
-        if (localStorage.getItem('token')) {
+        if (localStorage.getItem('token') && !window.location.search.includes('activated')) {
             window.location.href = 'index.html';
         }
     </script>
