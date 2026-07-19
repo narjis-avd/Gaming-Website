@@ -48,7 +48,7 @@ $(document).ready(function(){
 //contact us button that connect to contact form
 const button = document.getElementById('contact-us');
 button.addEventListener('click', function() {
-    window.location.href = 'contact.html';
+    window.location.href = '/contact';
 });
 
 

@@ -44,7 +44,11 @@ app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// Serve static frontend files
+// View engine setup (EJS)
+app.set('view engine', 'ejs');
+app.set('views', path.join(__dirname, 'Front-end', 'views'));
+
+// Serve static frontend files (css, js, images, videos, cdn assets)
 app.use(express.static(path.join(__dirname, 'Front-end')));
 
 // API Routes
@@ -55,10 +59,17 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/contact', contactRoutes);
 
-// Root route — serve the frontend
-app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'Front-end', 'index.html'));
-});
+// Page routes — render EJS views
+app.get('/', (req, res) => res.render('index'));
+app.get('/store', (req, res) => res.render('store'));
+app.get('/product', (req, res) => res.render('product'));
+app.get('/cart', (req, res) => res.render('cart'));
+app.get('/login', (req, res) => res.render('login'));
+app.get('/admin', (req, res) => res.render('admin'));
+app.get('/contact', (req, res) => res.render('contact'));
+app.get('/faqs', (req, res) => res.render('FAQS'));
+app.get('/gallery', (req, res) => res.render('gallery'));
+app.get('/silder', (req, res) => res.render('silder'));
 
 // Connect to MongoDB and start server
 const PORT = process.env.PORT || 5000;
