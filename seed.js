@@ -1,10 +1,12 @@
 const mongoose = require('mongoose');
+const { faker } = require('@faker-js/faker');
 require('dotenv').config();
 
 const Product = require('./models/Product');
 const User = require('./models/User');
 
-const products = [
+// Hand-crafted seed products (kept for high quality / featured items)
+const initialProducts = [
   // ═══════════════════════════════════════
   // PERIPHERALS (10 products)
   // ═══════════════════════════════════════
@@ -376,23 +378,106 @@ const products = [
   },
 ];
 
+// Fallback high-quality Unsplash gaming images per category for generated products
+const CATEGORY_IMAGES = {
+  Peripherals: [
+    'https://images.unsplash.com/photo-1618384887929-16ec33fab9ef?w=500&q=80',
+    'https://images.unsplash.com/photo-1527814050087-3793815479db?w=500&q=80',
+    'https://images.unsplash.com/photo-1595225476474-87563907a212?w=500&q=80',
+  ],
+  Hardware: [
+    'https://images.unsplash.com/photo-1591488320449-011701bb6704?w=500&q=80',
+    'https://images.unsplash.com/photo-1555617981-dac3880eac6e?w=500&q=80',
+    'https://images.unsplash.com/photo-1587202372775-e229f172b9d7?w=500&q=80',
+  ],
+  Displays: [
+    'https://images.unsplash.com/photo-1527443224154-c4a3942d3acf?w=500&q=80',
+    'https://images.unsplash.com/photo-1593640408182-31c70c8268f5?w=500&q=80',
+    'https://images.unsplash.com/photo-1585792180666-f7347c490ee2?w=500&q=80',
+  ],
+  Audio: [
+    'https://images.unsplash.com/photo-1599669454699-248893623440?w=500&q=80',
+    'https://images.unsplash.com/photo-1583394838336-acd977736f90?w=500&q=80',
+    'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=500&q=80',
+  ],
+  Consoles: [
+    'https://images.unsplash.com/photo-1607853202273-797f1c22a38e?w=500&q=80',
+    'https://images.unsplash.com/photo-1621259182978-fbf93132d53d?w=500&q=80',
+    'https://images.unsplash.com/photo-1578303512597-81e6cc155b3e?w=500&q=80',
+  ],
+};
+
+const CATEGORIES = ['Peripherals', 'Hardware', 'Displays', 'Audio', 'Consoles'];
+
+// Helper to generate a dynamic gaming product title matching categories
+function generateProductTitle(category) {
+  const brand = faker.company.name().split(' ')[0];
+  const modelCode = faker.string.alphanumeric({ length: 4, casing: 'upper' });
+
+  switch (category) {
+    case 'Hardware':
+      return `${brand} ${faker.helpers.arrayElement(['RTX', 'RX', 'Core i9', 'Ryzen 7'])} ${modelCode} Ultra Component`;
+    case 'Displays':
+      return `${brand} ${faker.number.int({ min: 24, max: 49 })}" ${faker.helpers.arrayElement(['4K', 'QHD', 'OLED'])} ${faker.number.int({ min: 144, max: 360 })}Hz Gaming Monitor`;
+    case 'Audio':
+      return `${brand} ${faker.helpers.arrayElement(['Pro', 'Apex', 'Cloud', 'Nova'])} ${modelCode} Wireless Headset`;
+    case 'Consoles':
+      return `${brand} Gaming Station ${modelCode} ${faker.helpers.arrayElement(['Pro', 'Slim', 'Edition'])}`;
+    case 'Peripherals':
+    default:
+      return `${brand} ${faker.helpers.arrayElement(['Pro', 'Elite', 'Chroma'])} ${faker.helpers.arrayElement(['Keyboard', 'Mouse', 'Controller', 'Webcam'])}`;
+  }
+}
+
+// Generate rest of the products up to target limit
+function generateMockProducts(targetTotal, existingArray) {
+  const generated = [];
+  const needed = targetTotal - existingArray.length;
+
+  for (let i = 0; i < needed; i++) {
+    const category = faker.helpers.arrayElement(CATEGORIES);
+    const categoryImage = faker.helpers.arrayElement(CATEGORY_IMAGES[category]);
+
+    generated.push({
+      title: generateProductTitle(category),
+      description: faker.commerce.productDescription(),
+      price: parseFloat(faker.commerce.price({ min: 15, max: 1500, dec: 2 })),
+      image: categoryImage,
+      category: category,
+    });
+  }
+
+  return [...existingArray, ...generated];
+}
+
 const seedDB = async () => {
   try {
     await mongoose.connect(process.env.MONGO_URI);
-    console.log('✅ Connected to MongoDB for seeding');
+    console.log(' Connected to MongoDB for seeding');
 
     // Clear existing products
     await Product.deleteMany({});
-    console.log('🗑️  Cleared existing products');
+    console.log(' Cleared existing products');
 
-    // Insert all products
-    const inserted = await Product.insertMany(products);
-    console.log(`🌱 Seeded ${inserted.length} products successfully!\n`);
+    // Combine 50 initial products with 9,950 generated ones
+    const TOTAL_TARGET = 10000;
+    const allProducts = generateMockProducts(TOTAL_TARGET, initialProducts);
+
+    console.log(` Generating & inserting ${allProducts.length} products in batches...`);
+
+    // Insert in batches of 1,000 for high efficiency
+    const BATCH_SIZE = 1000;
+    for (let i = 0; i < allProducts.length; i += BATCH_SIZE) {
+      const batch = allProducts.slice(i, i + BATCH_SIZE);
+      await Product.insertMany(batch);
+      console.log(`   Inserted ${Math.min(i + BATCH_SIZE, allProducts.length)} / ${allProducts.length} products...`);
+    }
+
+    console.log(`🌱 Seeded total ${allProducts.length} products successfully!\n`);
 
     // Print summary by category
-    const categories = ['Peripherals', 'Hardware', 'Displays', 'Audio', 'Consoles'];
-    for (const cat of categories) {
-      const count = inserted.filter((p) => p.category === cat).length;
+    for (const cat of CATEGORIES) {
+      const count = await Product.countDocuments({ category: cat });
       console.log(`   📁 ${cat}: ${count} products`);
     }
 
@@ -414,10 +499,10 @@ const seedDB = async () => {
       console.log('\n👑 Admin user already exists');
     }
 
-    console.log('\n✅ Seeding complete!');
+    console.log('\n Seeding complete!');
     process.exit(0);
   } catch (error) {
-    console.error('❌ Seeding error:', error.message);
+    console.error(' Seeding error:', error.message);
     process.exit(1);
   }
 };
