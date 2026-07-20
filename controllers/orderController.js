@@ -34,7 +34,7 @@ const updateOrderStatus = async (req, res) => {
     const io = req.app.get('io');
     if (io) {
       io.emit('orderUpdate', {
-        message: `📦 Order ${order.orderId} status updated to: ${status}`,
+        message: ` Order ${order.orderId} status updated to: ${status}`,
         orderId: order.orderId,
         status: status,
       });

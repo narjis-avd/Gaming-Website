@@ -35,7 +35,7 @@ const submitContactForm = async (req, res) => {
     // 2. Email to the admin
     await sendEmail({
       to: adminEmail,
-      subject: '⚠️ New Contact Form Submission — Gaming Hub',
+      subject: ' New Contact Form Submission — Gaming Hub',
       text: `Alert: New query submitted.\n\nName: ${name}\nEmail: ${email}\nMessage: ${message}`,
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #0b0b16; color: #ffffff; padding: 25px; border-radius: 12px; max-width: 600px; border: 1px solid #ef4444;">

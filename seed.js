@@ -478,7 +478,7 @@ const seedDB = async () => {
     // Print summary by category
     for (const cat of CATEGORIES) {
       const count = await Product.countDocuments({ category: cat });
-      console.log(`   📁 ${cat}: ${count} products`);
+      console.log(`    ${cat}: ${count} products`);
     }
 
     // Create a default admin user if one doesn't exist
@@ -492,11 +492,11 @@ const seedDB = async () => {
         active: true,
         walletBalance: 99999,
       });
-      console.log('\n👑 Created default admin user:');
+      console.log('\n Created default admin user:');
       console.log('   Email: admin@gaminghub.com');
       console.log('   Password: admin123');
     } else {
-      console.log('\n👑 Admin user already exists');
+      console.log('\n Admin user already exists');
     }
 
     console.log('\n Seeding complete!');

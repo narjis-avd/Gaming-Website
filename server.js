@@ -76,8 +76,6 @@ const PORT = process.env.PORT || 5000;
 
 connectDB().then(() => {
   server.listen(PORT, () => {
-    console.log(`\n🎮 Gaming Hub Server running on http://localhost:${PORT}`);
-    console.log(`📦 API endpoints available at http://localhost:${PORT}/api`);
-    console.log(`🌐 Frontend served from http://localhost:${PORT}\n`);
+    console.log(`\n Gaming Hub Server running on http://localhost:${PORT}`);
   });
 });

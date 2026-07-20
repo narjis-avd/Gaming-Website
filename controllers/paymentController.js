@@ -106,7 +106,7 @@ const checkout = async (req, res) => {
 
     await sendEmail({
       to: user.email,
-      subject: `🎮 Order Confirmed! Receipt — ${orderId}`,
+      subject: ` Order Confirmed! Receipt — ${orderId}`,
       text: `Hi ${user.username},\n\nYour order has been successfully placed!\n\nOrder ID: ${orderId}\nTotal: $${orderTotal.toFixed(2)}\nShipping Address: ${address}\n\nThank you for shopping at Gaming Hub!`,
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #0b0b16; color: #ffffff; padding: 25px; border-radius: 12px; max-width: 600px; border: 1px solid #6d28d9;">
@@ -151,7 +151,7 @@ const checkout = async (req, res) => {
     // 2. Send notification email to Admin
     await sendEmail({
       to: adminEmail,
-      subject: `📦 New Order Placed: ${orderId} — Gaming Hub`,
+      subject: ` New Order Placed: ${orderId} — Gaming Hub`,
       text: `Alert: User ${user.username} placed a new order ${orderId} for $${orderTotal.toFixed(2)}.`,
       html: `
         <div style="font-family: Arial, sans-serif; background-color: #0b0b16; color: #ffffff; padding: 25px; border-radius: 12px; max-width: 600px; border: 1px solid #00f5ff;">
@@ -188,7 +188,7 @@ const checkout = async (req, res) => {
     const io = req.app.get('io');
     if (io) {
       io.emit('orderUpdate', {
-        message: `🎮 New order placed by ${user.username}!`,
+        message: ` New order placed by ${user.username}!`,
         orderId,
         total: orderTotal,
         itemCount: orderItems.length,
