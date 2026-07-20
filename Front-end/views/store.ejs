@@ -914,14 +914,39 @@
                 return;
             }
 
+            const maxVisible = 5;
+            let startPage = Math.max(1, page - Math.floor(maxVisible / 2));
+            let endPage = startPage + maxVisible - 1;
+
+            if (endPage > pages) {
+                endPage = pages;
+                startPage = Math.max(1, endPage - maxVisible + 1);
+            }
+
             let html = '';
-            
+
             // Previous button
             html += `<button class="pagination-btn" onclick="loadProducts(${page - 1})" ${page === 1 ? 'disabled' : ''}><i class="fas fa-chevron-left"></i> Prev</button>`;
 
-            // Page numbers
-            for (let i = 1; i <= pages; i++) {
+            // Leading "1 ..." if window doesn't start at page 1
+            if (startPage > 1) {
+                html += `<button class="pagination-btn" onclick="loadProducts(1)">1</button>`;
+                if (startPage > 2) {
+                    html += `<span style="color:#94a3b8; padding:0 4px;">...</span>`;
+                }
+            }
+
+            // Page numbers window (max 5)
+            for (let i = startPage; i <= endPage; i++) {
                 html += `<button class="pagination-btn ${i === page ? 'active' : ''}" onclick="loadProducts(${i})">${i}</button>`;
+            }
+
+            // Trailing "... last" if window doesn't end at the last page
+            if (endPage < pages) {
+                if (endPage < pages - 1) {
+                    html += `<span style="color:#94a3b8; padding:0 4px;">...</span>`;
+                }
+                html += `<button class="pagination-btn" onclick="loadProducts(${pages})">${pages}</button>`;
             }
 
             // Next button
