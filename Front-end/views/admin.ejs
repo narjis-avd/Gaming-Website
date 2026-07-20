@@ -391,14 +391,14 @@
     <header>
         <div class="head-left">
             <img src="images/logo.png" alt="logo">
-            <button onclick="window.location.href='store.html'">Products</button>
+            <button onclick="window.location.href='/store'">Products</button>
         </div>
         <div class="head-right">
-            <p><a href="index.html">HOME</a></p>
-            <p><a href="index.html#about">ABOUT</a></p>
-            <p><a href="store.html">STORE</a></p>
-            <p><a href="FAQS.html">FAQS</a></p>
-            <p><a href="contact.html">CONTACT</a></p>
+            <p><a href="/">HOME</a></p>
+            <p><a href="/#about">ABOUT</a></p>
+            <p><a href="/store">STORE</a></p>
+            <p><a href="/faqs">FAQS</a></p>
+            <p><a href="/contact">CONTACT</a></p>
             <p id="nav-auth-link"></p>
         </div>
     </header>
@@ -574,7 +574,7 @@
         // Security check: Guard page
         if (!user || user.role !== 'admin') {
             alert('Access Denied. Admin authentication required.');
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
 
         document.addEventListener('DOMContentLoaded', () => {
@@ -592,7 +592,7 @@
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
 
         // Tab Switcher
