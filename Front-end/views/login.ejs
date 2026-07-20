@@ -342,21 +342,21 @@
     <header>
         <div class="head-left">
             <img src="images/logo.png" alt="logo">
-            <button onclick="window.location.href='store.html'">Products</button>
+            <button onclick="window.location.href='/store'">Products</button>
         </div>
         <div class="head-right">
-            <p><a href="index.html">HOME</a></p>
-            <p><a href="index.html#about">ABOUT</a></p>
-            <p><a href="store.html">STORE</a></p>
-            <p><a href="FAQS.html">FAQS</a></p>
-            <p><a href="contact.html">CONTACT</a></p>
+            <p><a href="/">HOME</a></p>
+            <p><a href="/#about">ABOUT</a></p>
+            <p><a href="/store">STORE</a></p>
+            <p><a href="/faqs">FAQS</a></p>
+            <p><a href="/contact">CONTACT</a></p>
         </div>
     </header>
 
     <div class="auth-bg"></div>
 
     <div class="auth-wrapper">
-        <a class="auth-logo" href="index.html">
+        <a class="auth-logo" href="/">
             <img src="images/logo.png" alt="Gaming Hub">
             <span>GAMING HUB</span>
         </a>
@@ -438,7 +438,7 @@
 
             <div class="auth-divider">or</div>
             <p style="text-align: center; color: #94a3b8; font-size: 13px;">
-                <a href="index.html" style="color: #a78bfa; text-decoration: none;">← Back to Home</a>
+                <a href="/" style="color: #a78bfa; text-decoration: none;">← Back to Home</a>
             </p>
         </div>
     </div>
@@ -514,7 +514,7 @@
                 }));
 
                 showMessage('Login successful! Redirecting...', 'success');
-                setTimeout(() => window.location.href = 'index.html', 1000);
+                setTimeout(() => window.location.href = '/', 1000);
             } catch (err) {
                 showMessage(err.message || 'Login failed');
                 btn.disabled = false;
@@ -565,7 +565,7 @@
 
         // If already logged in, redirect
         if (localStorage.getItem('token') && !window.location.search.includes('activated')) {
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
     </script>
 </body>

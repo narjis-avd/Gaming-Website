@@ -673,14 +673,14 @@
     <header>
         <div class="head-left">
             <img src="images/logo.png" alt="logo">
-            <button onclick="window.location.href='store.html'">Products</button>
+            <button onclick="window.location.href='/store'">Products</button>
         </div>
         <div class="head-right" id="nav-links">
-            <p><a href="index.html">HOME</a></p>
-            <p><a href="index.html#about">ABOUT</a></p>
-            <p><a href="store.html">STORE</a></p>
-            <p><a href="FAQS.html">FAQS</a></p>
-            <p><a href="contact.html">CONTACT</a></p>
+            <p><a href="/">HOME</a></p>
+            <p><a href="/#about">ABOUT</a></p>
+            <p><a href="/store">STORE</a></p>
+            <p><a href="/faqs">FAQS</a></p>
+            <p><a href="/contact">CONTACT</a></p>
             <p id="nav-auth-link"></p>
         </div>
     </header>
@@ -710,7 +710,7 @@
                 <span>—</span>
                 <input type="number" id="max-price" placeholder="Max" min="0">
             </div>
-            <a href="cart.html" class="cart-link" id="cart-header-link">
+            <a href="/cart" class="cart-link" id="cart-header-link">
                 <i class="fas fa-shopping-cart"></i> Cart
                 <span class="cart-count" id="cart-count">0</span>
             </a>
@@ -823,11 +823,11 @@
             if (isLoggedIn && user) {
                 let html = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
                 if (user.role === 'admin') {
-                    html = `<a href="admin.html" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
+                    html = `<a href="/admin" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
                 }
                 authLink.innerHTML = html;
             } else {
-                authLink.innerHTML = `<a href="login.html" style="color:#edff66;">LOGIN</a>`;
+                authLink.innerHTML = `<a href="/login" style="color:#edff66;">LOGIN</a>`;
             }
         }
 
@@ -884,12 +884,12 @@
 
             grid.innerHTML = products.map(p => `
                 <div class="product-card" data-id="${p._id}">
-                    <div class="card-image" onclick="window.location.href='product.html?id=${p._id}'" style="cursor:pointer;">
+                    <div class="card-image" onclick="window.location.href='/product?id=${p._id}'" style="cursor:pointer;">
                         <img src="${p.image}" alt="${p.title}" onerror="this.src='images/images.jfif'" loading="lazy">
                         <span class="category-badge">${p.category}</span>
                     </div>
                     <div class="card-body">
-                        <h3 class="card-title" onclick="window.location.href='product.html?id=${p._id}'" style="cursor:pointer; transition: color 0.2s;">${p.title}</h3>
+                        <h3 class="card-title" onclick="window.location.href='/product?id=${p._id}'" style="cursor:pointer; transition: color 0.2s;">${p.title}</h3>
                         <p class="card-desc">${p.description}</p>
                         <div class="card-footer">
                             <span class="card-price">$${p.price.toFixed(2)}</span>

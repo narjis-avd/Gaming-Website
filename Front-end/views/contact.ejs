@@ -18,15 +18,15 @@
     <header>
         <div class="head-left">
             <img src="images/logo.png" alt="logo">
-            <button onclick="window.location.href='store.html'">Products</button>
+            <button onclick="window.location.href='/store'">Products</button>
         </div>
 
         <div class="head-right" id="nav-links">
-            <p><a href="index.html">HOME</a></p>
-            <p><a href="index.html#about">ABOUT</a></p>
-            <p><a href="store.html">STORE</a></p>
-            <p><a href="FAQS.html">FAQS</a></p>
-            <p><a href="contact.html">CONTACT</a></p>
+            <p><a href="/">HOME</a></p>
+            <p><a href="/#about">ABOUT</a></p>
+            <p><a href="/store">STORE</a></p>
+            <p><a href="/faqs">FAQS</a></p>
+            <p><a href="/contact">CONTACT</a></p>
             <p class="nav-auth-link" id="nav-auth-link"></p>
         </div>
     </header>
@@ -196,11 +196,11 @@
                 if (isLoggedIn && user) {
                     let html = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
                     if (user.role === 'admin') {
-                        html = `<a href="admin.html" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
+                        html = `<a href="/admin" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
                     }
                     authLink.innerHTML = html;
                 } else {
-                    authLink.innerHTML = `<a href="login.html" style="color:#edff66;">LOGIN</a>`;
+                    authLink.innerHTML = `<a href="/login" style="color:#edff66;">LOGIN</a>`;
                 }
             }
         }
