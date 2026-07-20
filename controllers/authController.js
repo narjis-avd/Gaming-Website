@@ -124,25 +124,25 @@ const confirmAccount = async (req, res) => {
         <div style="font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #050505; color: #fff; min-height: 100vh;">
           <h2 style="color: #ef4444;">Activation Error</h2>
           <p>User not found or account does not exist.</p>
-          <a href="/login.html" style="color: #a78bfa;">Go to Login</a>
+          <a href="/login" style="color: #a78bfa;">Go to Login</a>
         </div>
       `);
     }
 
     if (user.active) {
-      return res.redirect('/login.html?activated=already');
+      return res.redirect('/login?activated=already');
     }
 
     user.active = true;
     await user.save();
 
-    res.redirect('/login.html?activated=true');
+    res.redirect('/login?activated=true');
   } catch (error) {
     res.status(400).send(`
       <div style="font-family: Arial, sans-serif; text-align: center; padding: 50px; background-color: #050505; color: #fff; min-height: 100vh;">
         <h2 style="color: #ef4444;">Activation Link Invalid</h2>
         <p>The token is invalid, corrupted, or has expired. Please register again.</p>
-        <a href="/login.html" style="color: #a78bfa;">Go to Login</a>
+        <a href="/login" style="color: #a78bfa;">Go to Login</a>
       </div>
     `);
   }
