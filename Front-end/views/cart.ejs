@@ -473,14 +473,14 @@
     <header>
         <div class="head-left">
             <img src="images/logo.png" alt="logo">
-            <button onclick="window.location.href='store.html'">Products</button>
+            <button onclick="window.location.href='/store'">Products</button>
         </div>
         <div class="head-right" id="nav-links">
-            <p><a href="index.html">HOME</a></p>
-            <p><a href="index.html#about">ABOUT</a></p>
-            <p><a href="store.html">STORE</a></p>
-            <p><a href="FAQS.html">FAQS</a></p>
-            <p><a href="contact.html">CONTACT</a></p>
+            <p><a href="/">HOME</a></p>
+            <p><a href="/#about">ABOUT</a></p>
+            <p><a href="/store">STORE</a></p>
+            <p><a href="/faqs">FAQS</a></p>
+            <p><a href="/contact">CONTACT</a></p>
             <p id="nav-auth-link"></p>
         </div>
     </header>
@@ -563,7 +563,7 @@
                     <p>Your order has been processed successfully.</p>
                     <p class="order-id" id="order-id-display"></p>
                     <p id="new-balance-display" style="color: #edff66; margin-top: 12px;"></p>
-                    <a href="store.html" style="display:inline-block; margin-top:20px; padding:12px 28px; background:linear-gradient(135deg,#6d28d9,#7c3aed); border-radius:12px; color:#fff; text-decoration:none; font-weight:600;">
+                    <a href="/store" style="display:inline-block; margin-top:20px; padding:12px 28px; background:linear-gradient(135deg,#6d28d9,#7c3aed); border-radius:12px; color:#fff; text-decoration:none; font-weight:600;">
                         Continue Shopping
                     </a>
                 </div>
@@ -588,7 +588,7 @@
         // ─── Init ───
         document.addEventListener('DOMContentLoaded', () => {
             if (!isLoggedIn) {
-                window.location.href = 'login.html';
+                window.location.href = '/login';
                 return;
             }
             updateNavAuth();
@@ -602,18 +602,18 @@
             if (isLoggedIn && user) {
                 let html = `<a href="#" onclick="logout()" style="color:#edff66;">${user.username} (Logout)</a>`;
                 if (user.role === 'admin') {
-                    html = `<a href="admin.html" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
+                    html = `<a href="/admin" style="color:#00f5ff; margin-right:15px; font-weight:bold;">ADMIN DASHBOARD</a>` + html;
                 }
                 authLink.innerHTML = html;
             } else {
-                authLink.innerHTML = `<a href="login.html" style="color:#edff66;">LOGIN</a>`;
+                authLink.innerHTML = `<a href="/login" style="color:#edff66;">LOGIN</a>`;
             }
         }
 
         function logout() {
             localStorage.removeItem('token');
             localStorage.removeItem('user');
-            window.location.href = 'index.html';
+            window.location.href = '/';
         }
 
         // ─── Load Cart ───
@@ -638,7 +638,7 @@
                         <i class="fas fa-shopping-basket"></i>
                         <h3>Your cart is empty</h3>
                         <p>Explore the store and add some epic gear!</p>
-                        <a href="store.html"><i class="fas fa-gamepad"></i> Browse Store</a>
+                        <a href="/store"><i class="fas fa-gamepad"></i> Browse Store</a>
                     </div>`;
                 updateSummary();
                 return;

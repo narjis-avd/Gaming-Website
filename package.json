@@ -9,7 +9,11 @@
     "seed": "node seed.js"
   },
   "dependencies": {
+<<<<<<< HEAD
     "@faker-js/faker": "^10.5.0",
+=======
+    "ejs": "^3.1.10",
+>>>>>>> db793b5ebcff25cead59ecbb0c8425d568b9307b
     "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
     "dotenv": "^16.6.1",
